@@ -25,7 +25,8 @@ set statusline=%<%{&ff}:%{&fenc}:%Y\ \ \|\ \ %f%m\ \ \|\ \ %{strftime('%y/%m/%d\
 set hidden
 
 set complete+=kspell
-set completeopt=menuone,longest,preview
+"set completeopt=menuone,longest,preview
+set completeopt=menuone,preview
 set shortmess+=c
 
 set guioptions-=m "turn off menu bar
@@ -36,7 +37,7 @@ set guioptions-=L "turn off scroll bar
 "turn on syntax highlighting
 syntax on
 set ruler
-colorscheme torte
+colorscheme evening
 
 highlight highlighter guibg=SlateBlue
 " ================ Turn Off Swap Files ==============
@@ -71,8 +72,6 @@ set expandtab
 filetype plugin on
 filetype indent on
 
-" Display tabs and trailing spaces visually
-set list listchars=tab:\ \ ,trail:·
 
 set nowrap       "Don't wrap lines
 "set linebreak    "Wrap lines at convenient points
@@ -93,6 +92,8 @@ set wildignore+=*vim/backups*
 set wildignore+=log/**
 set wildignore+=tmp/**
 set wildignore+=*.png,*.jpg,*.gif
+set wildignore+=*.elf,*.lst,*.map
+set wildignore+=*.a,*.pub,*.ilk
 
 " ================ Scrolling ========================
 
@@ -108,6 +109,11 @@ set ignorecase      " Ignore case when searching...
 set smartcase       " ...unless we type a capital
 
 " ================ Mappings ===========================
+
+" Save session
+map <F11> :mksession! ~\_vim_session<cr>
+" Restore session
+map <F12> :source ~\_vim_session<cr>
 
 "Set Leader character to space
 let mapleader = "\<Space>"
@@ -178,6 +184,12 @@ noremap <leader>ssd :%norm df"<cr>:%norm $x<cr>
 
 "Align Block
 noremap <leader>ab ms{mb}me`s:'b,'eAlign<cr>
+
+" Close buffer and go to the last buffer
+noremap <leader>d :b#<cr>:bdelete #<cr>:bn<cr>:bp<cr>
+
+" Reformat file
+noremap <leader>= ggVG=
 
 " ================ Command Mappings ==================
 " Edit my vimrc
@@ -284,7 +296,7 @@ function! PasteAutocomplete()
 
 endfunction
 
-function! NMode_RNU(id)
+function! NMode(id)
   let l:nmode = mode() =~# '[nvViR]'
   if l:nmode
     if !&rnu
@@ -317,7 +329,7 @@ endfunction
 
 
 "=========================
-call timer_start(100, function('NMode_RNU'), {'repeat': -1})
+call timer_start(100, function('NMode'), {'repeat': -1})
 
 " ================ Autocmds ======================
 
