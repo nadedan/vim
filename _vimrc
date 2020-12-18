@@ -212,14 +212,16 @@ command! -range -nargs=1 C :<line1>,<line2>s/^/<args>
 command! Wcp e clip "+p
 
 " SVN Check Out Here : checks out an SVN directory to the current working directory
-command! -nargs=1 -complete=customlist,Complete_SVN_paths SVNcoh :execute "!svn co "<q-args> getcwd()
+command! -nargs=1 -complete=customlist,Complete_SVN_paths SVNcoh :execute "!svn co ".<q-args>.getcwd()
 
 " SVN Check Out There : checks out an SVN directory to the specified directory
-command! -nargs=1 -complete=customlist,Complete_SVN_paths SVNcot :execute "!svn co "<q-args>
+command! -nargs=1 -complete=customlist,Complete_SVN_paths SVNcot :execute "!svn co ".<q-args>
 
 " SVN Check In : checks in the current file
 "  Takes check in comment as argument
-command! -nargs=1 SVNci :execute "!svn ci -m "<q-args> %
+command! -nargs=1 SVNci :execute "!svn ci -m ".<q-args>." %"
+
+command! SVNadd :execute "!svn add %"
 
 
 inoremap <c-up> <esc>:call GrabNeighbor(-1)<cr>
@@ -235,6 +237,7 @@ function! Complete_SVN_paths(ArgLead, CmdLine, CursorPos)
   return [
         \  'svn://training/Business_Reporting/Reports/Project_ETC/'
         \ ,'svn://training/Business_Reporting/Reports/Project_ETC/branches/'
+        \ ,'svn://training/Advanced_Technologies/HMI/Motion/Leap/DemoUI/'
         \]
 endfunction
 
